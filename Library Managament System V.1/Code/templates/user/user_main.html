@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+    <html lang="en">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>User Dashboard</title>
+                <link rel="stylesheet" href="{{ url_for('static', filename='css/UserMain_style.css') }}">
+                <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+        </head>
+    <body>
+        <!-- This is a header section -->
+            <ul class="nav-menu" style="margin-bottom: 1px;">
+                    <li style="margin-right:40px;"><i class="fa-solid fa-book-open-reader" id="main_logo" >  Reads</i></li>
+                    <li><a href="{{url_for('mybook_main')}}">My Books</a></li>
+                    <li><a href="{{url_for('user_stat')}}">My Stats</a></li>
+                    <!-- <li><a href="{{url_for('login')}}">Log In</a></li> -->
+                    <li><a href="{{url_for('logout')}}"><i class="fa-solid fa-user" id="user_logo"> </i>Sign Out</a></li>
+            </ul>
+        <!-- This is User search second navigation bar -->
+        <form action="{{ url_for('user_dashboard') }}" method="post">
+            <ul class="nav-menu" style="background-color:#91171fbb;margin-bottom: 0px;">
+                <!-- This is Categories field -->
+                <li>
+                    <select name="val" class="form-select-lg" aria-label="Large select example" style="border-radius: 5px; padding-bottom: 10px;">
+                        <option selected>Categories</option>
+                        <option value="b_title">Title</option>
+                        <option value="b_author">Author</option>
+                        <option value="b_section">Section</option>
+                        <option value="b_isbn">ISBN No</option>
+                    </select>          
+                </li> 
+                <!-- This is Search field -->   
+                <li>
+                    <input class="form-control-lg" name="search_querry" id="search_querry" placeholder="Search by Title, Author or ISBN" style="width: 1170px;">
+                </li>
+                <!-- This is Search Button -->
+                <li>
+                    <button type="submit" class="btn btn-primary" style="background-color: #BA1F33; border-color: #fff; padding: 12px; padding-right: 20px;">Search</button>
+                </li>
+            </ul>
+        </form>
+        
+                                                            <!-- This is a main content section -->
+        <!-- This is a welcome heading -->
+        <h2 class="display-6" id = "intro"><b>Welcome, {{user.name}}</b></h2><br>
+        <!-- Individual book in Section -->
+       
+        
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 30%;">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{message}}
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+        <div class="container" style="width: 80%;">
+            {% for section in sections %} 
+                <div class="sections">{{section.name}}</div>
+                    <div class="out_container" class = "row row-cols-4" style="display: flex;justify-content: center;flex-wrap: wrap;">
+                        {% for book in books if book.section_id == section.id %}
+                        {% if (b_isbn and book.isbn >= b_isbn)or(b_author and b_author.lower() in book.author.lower()) or (b_title and b_title.lower() in book.name.lower()) or (not b_isbn and not b_title and not b_author)%}
+                            <div class="in_container" id = "main_box">
+                                <form action="{{url_for('want_to_read', book_id=book.id)}}" method="post">
+                                    <img src="{{url_for('static', filename='image/img_book.jpg')}}" width="200px" height="200px" alt="book" class="book-image"><br>
+                                    <span class="detail-button"><b>{{ book.name }}</b></span><br>
+                                    <span class="detail-button"><i>{{ book.author }}</i></span><br>
+                                    <span class="detail-button">ISBN-: {{ book.isbn }}</i></span><br>
+                                    <button type="submit" class="btn btn-primary" style="background-color: #BA1F33; border-color: #fff;margin-top: 8px;">Want to read</button>
+                                </form>
+                            </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+            {% endfor %}
+        </div>
+    </body>
+</html>

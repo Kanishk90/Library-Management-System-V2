@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+    <html lang="en">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>User Statistics</title>
+                <link rel="stylesheet" href="{{ url_for('static', filename='css/User/user_current.css') }}">
+                <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        </head>
+    <body>
+        <!-- ==========================================  Head Section  ============================================== -->
+
+        <!-- This is Main Nav Bar-->
+        <ul class="nav-menu" style="margin-bottom: 1px;">
+            <li style="margin-right:0px;"><i class="fa-solid fa-book-open-reader" id="main_logo" >  Reads</i></li>
+            <li><a href="{{url_for('user_dashboard')}}">My Dashboard</a></li>
+            <li><a href="{{url_for('login')}}"><i class="fa-solid fa-user" id="user_logo"> </i> Sign Out</a></li>
+        </ul>
+        <!-- This is Info Nav Bar -->
+            <h2 style="color: #fff;background-color:#91171fbb; text-align: center;padding: 5px;">{{user.name}} Reading Journey</h2>
+
+        <!-- ==========================================  Main Body  ================================================= -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 30%;">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {{message}}
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <!-- Creating Graph using the Matplotlib laibrary -->
+        <center>
+            <div class="current_graph">
+                <img src="data:image/png;base64,{{ plot_data }}" alt="User Statistics Plot" style="border: 5px solid black;padding: 10px;">
+            </div>
+        </center>
+    </body>
+</html>

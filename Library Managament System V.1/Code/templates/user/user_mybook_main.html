@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+    <html lang="en">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>My Books</title>
+                <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin_main.css') }}">
+                <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        </head>
+    <body>
+        <!-- ==========================================  Head Section  ============================================== -->
+
+        <!-- This is Main Nav Bar-->
+        <ul class="nav-menu" style="margin-bottom: 1px;">
+            <li style="margin-right:0px;"><i class="fa-solid fa-book-open-reader fa-3x" style="padding: 20px;color: #fff;" >  Reads</i></li>
+        </ul>
+
+        <!-- ==========================================  Main Body  ================================================= -->
+        <div class="container" style="margin-top: 80px; width: 70%;display: flex;justify-content: center;">
+            <div class="form_box">
+                <!-- This is Info Nav Bar -->
+                <h2 style="color: #fff;background-color:#91171fbb; text-align: center;padding: 5px;">{{user.name}}'s Books</h2>
+                <div class="section">
+                    <a href="{{url_for('current_reads')}}"><div class="section1">Current Books</a></div>
+                    <a href="{{url_for('completed_reads')}}"><div class="section1">Completed Books</a></div>
+                </div>
+            </div>  
+    </body>
+</html>
